@@ -112,9 +112,9 @@ export default function Home() {
       });
 
       const data = await res.json();
-      setAiFeedback(data.feedback || "No AI response");
+      setAiFeedback(data.feedback || `AI error: ${data.details || data.error || "No response"}`);
     } catch (error) {
-      setAiFeedback("AI error occurred");
+      setAiFeedback("AI error: request failed");
     }
 
     setLoading(null);
@@ -132,9 +132,9 @@ export default function Home() {
       });
 
       const data = await res.json();
-      setRewrittenCV(data.rewritten || "No rewrite generated");
+      setRewrittenCV(data.rewritten || `Rewrite failed: ${data.details || data.error || "No response"}`);
     } catch (error) {
-      setRewrittenCV("Rewrite failed");
+      setRewrittenCV("Rewrite failed: request failed");
     }
 
     setLoading(null);
