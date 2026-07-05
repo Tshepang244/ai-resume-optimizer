@@ -1,26 +1,95 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Paper + ink base */
+  --paper: #faf8f3;
+  --paper-raised: #ffffff;
+  --ink: #17181c;
+  --ink-soft: #63666f;
+  --line: #e7e2d6;
+  --line-strong: #d8d2c2;
+
+  /* Scan accent — the one bold color in the system */
+  --scan: #2f5eff;
+  --scan-dark: #1f45d1;
+  --scan-soft: #e8edff;
+
+  /* Score bands */
+  --good: #1f9d55;
+  --good-soft: #e6f6ec;
+  --mid: #d97706;
+  --mid-soft: #fdf1e0;
+  --low: #dc2626;
+  --low-soft: #fbe7e7;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-scan: var(--scan);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  background-image: radial-gradient(var(--line) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* Signature element: a scanner sweep across whichever panel is being analyzed */
+@keyframes scan-sweep {
+  0% {
+    transform: translateY(-10%);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110%);
+    opacity: 0;
+  }
+}
+
+.scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--scan), transparent);
+  box-shadow: 0 0 14px 2px var(--scan);
+  animation: scan-sweep 1.7s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scan-line {
+    animation: none;
+    opacity: 0.35;
+  }
+}
+
+.gauge-ring {
+  transition: stroke-dashoffset 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+::selection {
+  background: var(--scan-soft);
+  color: var(--scan-dark);
 }
